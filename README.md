@@ -3,9 +3,9 @@ File Usage Add
 
 Allows any existing file to be self-referenced.
 
-This solves the problem that any pre-existing file without a reference, cannot
-be referecned anywhere else, including managed file fields, interting images
-into the rich-text, editor, etc.
+This solves the problem that any pre-existing file without a reference cannot
+be referecned anywhere else. Refernces are needed on managed file fields, images
+inserted into content, and other various places.
 
 
 Installation <!-- This section is required. -->

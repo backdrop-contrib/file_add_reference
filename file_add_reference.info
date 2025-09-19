@@ -1,6 +1,6 @@
 type = module
 name = File add reference
-description = Allows managed files to be referenced by themselves. Managed files must be referenced once, to be referenced again.
+description = Allows pre-existing files to be referenced by adding use count.
 backdrop = 1.x
 
 _configure = admin/structure/flags

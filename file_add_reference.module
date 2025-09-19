@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Allows managed files to be referenced by themselves.
+ * Allows pre-existing files to be referenced by adding use count.
  */
 
 /**
