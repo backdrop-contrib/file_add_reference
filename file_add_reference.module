@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Allows managed files to be referenced by themselves.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function file_add_reference_form_file_manage_form_alter(&$form, $form_state) {
+  // Only needed for pre-existing files.
+  if (isset($form['fid']['#value'])) {
+    if ($file = file_load($form['fid']['#value'])) {
+      if ($file->status == FILE_STATUS_PERMANENT) {
+        $references = file_usage_list($file);
+        if (empty($references)) {
+          $form['self_reference'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Create a self-refrence to this file'),
+            '#default_value' => FALSE,
+          );
+
+          // Adding a normal submit handler does not work here... ???
+          // array_unshift($form['#submit'], 'file_add_reference_submit');
+
+          // Element submit does the trick.
+          array_unshift($form['actions']['submit']['#submit'], 'file_add_reference_submit');
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Submit handler for adding a self-reference.
+ */
+function file_add_reference_submit(&$form, &$form_state) {
+  if ($form_state['values']['self_reference'] == TRUE) {
+    // Record that a module (in this case, the File module) is using the file.
+    // Without the call to file_usage_add, file_managed_file_validate() produces
+    // an error when referencing this image, saying that the uploaded file may
+    // not be referenced.
+    $file = file_load($form_state['values']['fid']);
+    file_usage_add($file, 'file', 'file', $file->fid);
+  }
+}
